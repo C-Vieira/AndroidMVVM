@@ -1,11 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.androidmvvm"
     compileSdk = 34
+
+    buildFeatures{
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.example.androidmvvm"
@@ -36,9 +42,17 @@ android {
 }
 
 dependencies {
-    implementation("io.insert-koin:koin-android:3.5.6")
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    // FireBase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+
+    // Koin
+    implementation(libs.koin.android)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

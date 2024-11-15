@@ -1,5 +1,6 @@
-package com.example.androidmvvm
+package com.example.androidmvvm.fact.data.remote
 
+import com.example.androidmvvm.fact.model.Fact
 import retrofit2.Response
 import retrofit2.http.GET
 

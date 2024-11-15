@@ -1,4 +1,4 @@
-package com.example.androidmvvm
+package com.example.androidmvvm.fact.presentation
 
 import android.os.Bundle
 import android.widget.Button
@@ -10,36 +10,28 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.androidmvvm.R
+import com.example.androidmvvm.databinding.RandomRollViewBinding
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.context.GlobalContext.startKoin
-import org.koin.dsl.module
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
-    private val viewModel: RandomRollViewModel by inject()
+class RandomRollActivity : AppCompatActivity() {
+    //private lateinit var binding: RandomRollViewBinding
+    private val randomRollViewModel: RandomRollViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+
+        //binding = RandomRollViewBinding.inflate(layoutInflater)
+        //setContentView(binding.root)
+
+        setContentView(R.layout.random_roll_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-        }
-
-        val appModule = module {
-            single<RandomFactDataSource> { RandomFactDataSource() }
-            single<FactRepository> { FactRepositoryImpl(get()) }
-            viewModel { RandomRollViewModel(get()) }
-        }
-        startKoin{
-            androidLogger()
-            androidContext(this@MainActivity)
-            modules(appModule)
         }
 
         val label = findViewById<TextView>(R.id.label)
@@ -47,14 +39,14 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch{
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.state.collect { newFact ->
+                randomRollViewModel.state.collect { newFact ->
                     label.text = newFact
                 }
             }
         }
 
         button.setOnClickListener {
-            viewModel.roll()
+            randomRollViewModel.roll()
         }
     }
 }

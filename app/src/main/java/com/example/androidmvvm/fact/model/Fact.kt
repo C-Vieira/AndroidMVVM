@@ -1,4 +1,4 @@
-package com.example.androidmvvm
+package com.example.androidmvvm.fact.model
 
 import com.google.gson.annotations.SerializedName
 
